@@ -1,0 +1,9 @@
+help = backup instances' data dir to <dir>.<tag>
+abbrs = back|bck|bk
+
+[env]
+tidb.cluster = read
+tidb.backup.tag = read
+
+[dep]
+tiup = to get dir of each instance from cluster

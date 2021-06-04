@@ -1,0 +1,8 @@
+help = move instances' data dir to <dir>.<tag>
+abbrs = move|mv
+
+[env]
+tidb.cluster = read
+
+[dep]
+tiup = to get dir of each instance from cluster

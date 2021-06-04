@@ -1,0 +1,8 @@
+help = remove instances' backuped dir: <dir>.<tag>
+abbrs = rm|delete|del
+
+[env]
+tidb.cluster = read
+
+[dep]
+tiup = to get dir of each instance from cluster
