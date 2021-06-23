@@ -4,6 +4,7 @@ abbrs = back|bck|bk
 [env]
 tidb.cluster = read
 tidb.backup.tag = read
+tidb.backup.skip-exist = read
 
 [dep]
 tiup = to get dir of each instance from cluster
