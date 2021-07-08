@@ -4,18 +4,20 @@ abbr = back|bck|bk
 [arg]
 cluster-name|cluster|name = ''
 tag|t|T = ''
-skip-exist|skip|s|S = ''
+skip-exist|skip|s|S = true
 use-mv-instead-of-cp|mv = false
 
 [arg2env]
 tidb.cluster = cluster-name
 tidb.backup.tag = tag
 tidb.backup.skip-exist = skip-exist
+tidb.backup.use-mv = use-mv-instead-of-cp
 
 [env]
 tidb.cluster = read
 tidb.backup.tag = read
 tidb.backup.skip-exist = read
+tidb.backup.use-mv = read
 
 [dep]
 tiup = to get dir of each instance from cluster
