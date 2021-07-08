@@ -1,5 +1,16 @@
 help = backup instances' data dir to <dir>.<tag>
-abbrs = back|bck|bk
+abbr = back|bck|bk
+
+[arg]
+cluster-name|cluster|name = ''
+tag|t|T = ''
+skip-exist|skip|s|S = ''
+use-mv-instead-of-cp|mv = false
+
+[arg2env]
+tidb.cluster = cluster-name
+tidb.backup.tag = tag
+tidb.backup.skip-exist = skip-exist
 
 [env]
 tidb.cluster = read

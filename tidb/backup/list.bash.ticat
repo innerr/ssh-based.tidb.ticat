@@ -1,6 +1,12 @@
 help = list backuped tags
 abbrs = ls
 
+[arg]
+cluster-name|cluster|name = ''
+
+[arg2env]
+tidb.cluster = cluster-name
+
 [env]
 tidb.cluster = read
 

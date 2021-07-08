@@ -1,22 +1,4 @@
-function ssh_exe()
-{
-	local host="${1}"
-	local cmd="${2}"
-	ssh -i "${pri_key}" -o BatchMode=yes "${user}"@"${host}" ${cmd} </dev/null
-}
-
-function env_val()
-{
-	local env="${1}"
-	local key="${2}"
-
-	local val=`echo "${env}" | { grep "^${key}" || test $? = 1; } | awk '{print $2}'`
-	if [ -z "${val}" ]; then
-		echo "[:(] no env val '${key}'" >&2
-		exit 1
-	fi
-	echo "${val}"
-}
+. "`cd $(dirname ${BASH_SOURCE[0]}) && pwd`/ticat.helper.bash/helper.bash"
 
 # export: $pri_key, $user, $cnt, $hosts, $dirs
 function get_instance_info()
@@ -24,17 +6,23 @@ function get_instance_info()
 	local env="${1}"
 	local check_stopped="${2}"
 
-	local name=`env_val "${env}" 'tidb.cluster'`
+	local name=`must_env_val "${env}" 'tidb.cluster'`
 
-	local statuses=`tiup cluster display "${name}"`
+	set +e
+	local statuses=`tiup cluster display "${name}" 2>/dev/null`
+	set -e
 	local instances=`echo "${statuses}" | awk '{if ($2=="pd" || $2=="tikv" || $2=="tiflash" || $2=="tiflash-learner") print $0}'`
 	if [ -z "${instances}" ]; then
-		echo "[:(] can't find pd or tikv instances" >&2
+		tiup cluster display "${name}"
+		echo "[:(] can't find storage instances (pd/tikv/tiflash)" >&2
 		exit 1
 	fi
 	cnt=`echo "${instances}" | wc -l`
 
-	pri_key=`tiup cluster list | awk '{if ($1=="'${name}'") print $NF}'`
+	# TODO: use this key for ssh
+	set +e
+	pri_key=`tiup cluster list 2>/dev/null | awk '{if ($1=="'${name}'") print $NF}'`
+	set -e
 
 	# TODO: get this from tiup yaml file. and other values like ssh-port
 	user='tidb'
@@ -59,5 +47,3 @@ function get_instance_info()
 		exit 1
 	fi
 }
-
-get_instance_info "${@}"

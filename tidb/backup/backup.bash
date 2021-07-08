@@ -1,26 +1,24 @@
-set -uo pipefail
+set -euo pipefail
+. "`cd $(dirname ${BASH_SOURCE[0]}) && pwd`/../../helper/helper.bash"
 
 env=`cat "${1}/env"`
+shift
 
-here=`cd $(dirname ${BASH_SOURCE[0]}) && pwd`
-. "${here}/base.bash" "${env}" 'true'
+shift 3
+use_mv=`to_true "${1}"`
 
-tag=`env_val "${env}" 'tidb.backup.tag'`
-skip=`env_val "${env}" 'tidb.backup.skip-exist'`
+# export: $pri_key, $user, $cnt, $hosts, $dirs
+get_instance_info "${env}" 'true'
 
-trues=('true' 't' 'yes' 'y' 'on' '1')
-for t in ${trues[@]}; do
-	if [ "${t}" == "${skip}" ]; then
-		skip='true'
-		break
-	fi
-done
+tag=`must_env_val "${env}" 'tidb.backup.tag'`
+skip=`must_env_val "${env}" 'tidb.backup.skip-exist'`
+skip=`to_true "${skip}"`
 
 for (( i = 0; i < ${cnt}; ++i)) do
 	host="${hosts[$i]}"
 	dir="${dirs[$i]}"
-	
-	echo "[:-] prepare to backup '${host}:${dir}' to tag '${tag}'"
+
+	echo "[:-] '${host}:${dir}' backup to tag '${tag}' begin"
 	set +e
 	exists=`ssh_exe "${host}" "test -d \"${dir}.${tag}\" && echo exists"`
 	set -e
@@ -34,7 +32,13 @@ for (( i = 0; i < ${cnt}; ++i)) do
 		fi
 	fi
 
-	cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/data/space_placeholder_file\" && cp -rp \"${dir}\" \"${dir}.${tag}\""
-	echo + ssh -i "${pri_key}" -o BatchMode=yes "${user}"@"${host}" ${cmd}
-	ssh_exe "${host}" "${cmd}"
+	if [ "${use_mv}" == 'true' ]; then
+		cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/data/space_placeholder_file\" && mv \"${dir}\" \"${dir}.${tag}\""
+		ssh_exe "${host}" "${cmd}"
+		echo "[:)] '${host}:${dir}' backup to tag '${tag}' finish (mv)"
+	else
+		cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/data/space_placeholder_file\" && cp -rp \"${dir}\" \"${dir}.${tag}\""
+		ssh_exe "${host}" "${cmd}"
+		echo "[:)] '${host}:${dir}' backup to tag '${tag}' finish (cp)"
+	fi
 done

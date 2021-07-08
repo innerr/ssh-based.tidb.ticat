@@ -1,6 +1,14 @@
 help = restore instances' data dir from <dir>.<tag>
 abbrs = rs
 
+[arg]
+cluster-name|cluster|name = ''
+tag|t|T = ''
+
+[arg2env]
+tidb.cluster = cluster-name
+tidb.backup.tag = tag
+
 [env]
 tidb.cluster = read
 tidb.backup.tag = read
