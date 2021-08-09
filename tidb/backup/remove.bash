@@ -4,7 +4,7 @@ set -euo pipefail
 env=`cat "${1}/env"`
 
 # export: $pri_key, $user, $cnt, $hosts, $dirs
-get_instance_info "${env}" 'true'
+get_instance_info "${env}" 'false'
 
 tag=`must_env_val "${env}" 'tidb.backup.tag'`
 
