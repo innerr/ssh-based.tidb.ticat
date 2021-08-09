@@ -5,7 +5,7 @@ abbr = back|bck|bk
 cluster-name|cluster|name = ''
 tag|t|T = ''
 skip-exist|skip|s|S = true
-use-mv-instead-of-cp|mv = false
+use-mv-instead-of-cp|use-mv|mv = false
 
 [arg2env]
 tidb.cluster = cluster-name
