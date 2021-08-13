@@ -49,7 +49,6 @@ function get_instance_info()
 	fi
 }
 
-# TODO: not fully check one is in another one
 function choose_backup_dir()
 {
 	local data_dir_origin="${1}"
@@ -62,9 +61,7 @@ function choose_backup_dir()
 		local deploy_dir=`readlink -f "${deploy_dir}"`
 	fi
 
-	local maybe_deploy_dir=`dirname "${data_dir}"`
-
-	if [ "${maybe_deploy_dir}" == "${deploy_dir}" ]; then
+	if [[ "${data_dir}" =~ ^"${deploy_dir}" ]]; then
 		echo "${deploy_dir_origin}"
 	else
 		echo "${data_dir_origin}"
