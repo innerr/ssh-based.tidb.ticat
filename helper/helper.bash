@@ -57,8 +57,10 @@ function choose_backup_dir()
 	local data_dir="${1}"
 	local deploy_dir="${2}"
 	if [ "`uname`" == 'Linux' ]; then
-		local data_dir=`readlink -f "${data_dir}"`
-		local deploy_dir=`readlink -f "${deploy_dir}"`
+		if [ -f "${data_dir}" ] && [ -f "${deploy_dir}" ]; then
+			local data_dir=`readlink -f "${data_dir}"`
+			local deploy_dir=`readlink -f "${deploy_dir}"`
+		fi
 	fi
 
 	if [[ "${data_dir}" =~ ^"${deploy_dir}" ]]; then
