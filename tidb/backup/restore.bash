@@ -10,7 +10,10 @@ tag=`must_env_val "${env}" 'tidb.backup.tag'`
 
 for (( i = 0; i < ${cnt}; ++i)) do
 	host="${hosts[$i]}"
-	dir="${data_dirs[$i]}"
+	data_dir="${data_dirs[$i]}"
+	deploy_dir="${deploy_dirs[$i]}"
+	dir=`choose_backup_dir "${data_dir}" "${deploy_dir}"`
+
 	echo "[:-] restore '${host}:${dir}' from tag '${tag}' begin"
 	cmd="rm -rf \"${dir}\" && rm -f \"${dir}.${tag}/space_placeholder_file\" && cp -rp \"${dir}.${tag}\" \"${dir}\""
 	ssh_exe "${host}" "${cmd}"
