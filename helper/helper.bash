@@ -1,6 +1,6 @@
 . "`cd $(dirname ${BASH_SOURCE[0]}) && pwd`/ticat.helper.bash/helper.bash"
 
-# export: $pri_key, $user, $cnt, $hosts, $dirs
+# export: $pri_key, $user, $cnt, $hosts, $deploy_dirs, $data_dirs
 function get_instance_info()
 {
 	local env="${1}"
@@ -36,9 +36,10 @@ function get_instance_info()
 	fi
 
 	hosts=(`echo "${instances}" | awk '{print $3}'`)
-	dirs=(`echo "${instances}" | awk '{print $NF}'`)
+	deploy_dirs=(`echo "${instances}" | awk '{print $NF}'`)
+	data_dirs=(`echo "${instances}" | awk '{print $(NF-1)}'`)
 
-	if [ "${#hosts[@]}" != "${#hosts[@]}" ]; then
+	if [ "${#hosts[@]}" != "${#deploy_dirs[@]}" ]; then
 		echo "[:(] hosts count != dirs count, string parsing failed" >&2
 		exit 1
 	fi
