@@ -1,6 +1,0 @@
-help = set tidb.ssh as tidb.backupper
-tags = config
-abbr = tidb.back.conf.ssh
-
-[val2env]
-tidb.backup = tidb.ssh

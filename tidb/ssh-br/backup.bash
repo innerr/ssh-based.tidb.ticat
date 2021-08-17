@@ -35,12 +35,15 @@ for (( i = 0; i < ${cnt}; ++i)) do
 		fi
 	fi
 
+	cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/space_placeholder_file\" && rm -f \"${dir}/data/space_placeholder_file\""
+	ssh_exe "${host}" "${cmd}"
+
 	if [ "${use_mv}" == 'true' ]; then
-		cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/space_placeholder_file\" && mv \"${dir}\" \"${dir}.${tag}\""
+		cmd="mv \"${dir}\" \"${dir}.${tag}\""
 		ssh_exe "${host}" "${cmd}"
 		echo "[:)] '${host}:${dir}' backup to tag '${tag}' finish (mv)"
 	else
-		cmd="rm -rf \"${dir}.${tag}\" && rm -f \"${dir}/space_placeholder_file\" && cp -rp \"${dir}\" \"${dir}.${tag}\""
+		cmd="cp -rp \"${dir}\" \"${dir}.${tag}\""
 		ssh_exe "${host}" "${cmd}"
 		echo "[:)] '${host}:${dir}' backup to tag '${tag}' finish (cp)"
 	fi
