@@ -1,22 +1,22 @@
-help = backup instances' data dir to <dir>.<tag>
+help = backup instances' data dir to <dir>.<tag>, exist-policy: skip|overwrite|error
 abbr = back|bck|bk
 
 [arg]
 cluster-name|cluster|name = ''
 tag|t|T = ''
-skip-exist|skip|s|S = true
+exist-policy|when-exist = skip
 use-mv-instead-of-cp|use-mv|mv = false
 
 [arg2env]
 tidb.cluster = cluster-name
 tidb.backup.tag = tag
-tidb.backup.skip-exist = skip-exist
+tidb.backup.exist-policy = exist-policy
 tidb.backup.use-mv = use-mv-instead-of-cp
 
 [env]
 tidb.cluster = read
 tidb.backup.tag = read
-tidb.backup.skip-exist = read
+tidb.backup.exist-policy = read
 tidb.backup.use-mv = read
 
 [dep]

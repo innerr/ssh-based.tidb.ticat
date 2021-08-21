@@ -9,8 +9,11 @@ get_instance_info "${env}" 'true'
 
 tag=`must_env_val "${env}" 'tidb.backup.tag'`
 
-skip_exist=`must_env_val "${env}" 'tidb.backup.skip-exist'`
-skip_exist=`to_true "${skip_exist}"`
+exist_policy=`must_env_val "${env}" 'tidb.backup.exist-policy'`
+if [ "${exist_policy}" != 'skip' ] && [ "${exist_policy}" != 'overwrite' ] && [ "${exist_policy}" != 'error' ]; then
+	echo "[:(] invalid exist-policy: '${exist_policy}', should be skip|overwrite|error" >&2
+	exit 1
+fi
 
 use_mv=`must_env_val "${env}" 'tidb.backup.use-mv'`
 use_mv=`to_true "${use_mv}"`
@@ -25,10 +28,13 @@ for (( i = 0; i < ${cnt}; ++i)) do
 	set +e
 	exists=`ssh_exe "${host}" "test -d \"${dir}.${tag}\" && echo exists"`
 	set -e
+
 	if [ ! -z "${exists}" ]; then
-		if [ "${skip_exist}" != 'true' ]; then
+		if [ "${exist_policy}" == 'error' ]; then
 			echo "[:(] '${host}:${dir}.${tag}' exists, backup failed"
 			exit 1
+		elif [ "${exist_policy}" == 'overwrite' ]; then
+			echo "[:-] '${host}:${dir}.${tag}' exists, overwriting"
 		else
 			echo "[:-] '${host}:${dir}.${tag}' exists, skipped"
 			exit 0
