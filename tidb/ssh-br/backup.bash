@@ -37,7 +37,7 @@ for (( i = 0; i < ${cnt}; ++i)) do
 			echo "[:-] '${host}:${dir}.${tag}' exists, overwriting"
 		else
 			echo "[:-] '${host}:${dir}.${tag}' exists, skipped"
-			exit 0
+			continue
 		fi
 	fi
 
