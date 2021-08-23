@@ -7,11 +7,11 @@ tag|t|T = ''
 
 [arg2env]
 tidb.cluster = cluster-name
-tidb.backup.tag = tag
+tidb.data.tag = tag
 
 [env]
 tidb.cluster = read
-tidb.backup.tag = read
+tidb.data.tag = read
 
 [dep]
 tiup = to get dir of each instance from cluster

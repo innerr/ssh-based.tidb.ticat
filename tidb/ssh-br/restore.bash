@@ -6,7 +6,7 @@ env=`cat "${1}/env"`
 # export: $pri_key, $user, $cnt, $hosts, $deploy_dirs, $data_dirs
 get_instance_info "${env}" 'true'
 
-tag=`must_env_val "${env}" 'tidb.backup.tag'`
+tag=`must_env_val "${env}" 'tidb.data.tag'`
 
 for (( i = 0; i < ${cnt}; ++i)) do
 	host="${hosts[$i]}"

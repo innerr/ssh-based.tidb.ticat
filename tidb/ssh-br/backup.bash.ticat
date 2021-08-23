@@ -9,13 +9,13 @@ use-mv-instead-of-cp|use-mv|mv = false
 
 [arg2env]
 tidb.cluster = cluster-name
-tidb.backup.tag = tag
+tidb.data.tag = tag
 tidb.backup.exist-policy = exist-policy
 tidb.backup.use-mv = use-mv-instead-of-cp
 
 [env]
 tidb.cluster = read
-tidb.backup.tag = read
+tidb.data.tag = read
 tidb.backup.exist-policy = read
 tidb.backup.use-mv = read
 

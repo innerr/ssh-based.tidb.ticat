@@ -7,7 +7,7 @@ shift
 # export: $pri_key, $user, $cnt, $hosts, $deploy_dirs, $data_dirs
 get_instance_info "${env}" 'true'
 
-tag=`must_env_val "${env}" 'tidb.backup.tag'`
+tag=`must_env_val "${env}" 'tidb.data.tag'`
 
 exist_policy=`must_env_val "${env}" 'tidb.backup.exist-policy'`
 if [ "${exist_policy}" != 'skip' ] && [ "${exist_policy}" != 'overwrite' ] && [ "${exist_policy}" != 'error' ]; then
